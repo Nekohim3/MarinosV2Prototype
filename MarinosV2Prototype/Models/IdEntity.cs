@@ -4,16 +4,16 @@ using Newtonsoft.Json;
 namespace MarinosV2Prototype.Models;
 
 [JsonObject]
-public abstract class GuidEntity : VersionEntity
+public abstract class IdEntity : VersionEntity
 {
     public Guid Id { get; set; }
 
-    public static bool operator !=(GuidEntity? a, GuidEntity? b)
+    public static bool operator !=(IdEntity? a, IdEntity? b)
     {
         return !(a == b);
     }
 
-    public static bool operator ==(GuidEntity? a, GuidEntity? b)
+    public static bool operator ==(IdEntity? a, IdEntity? b)
     {
         if (a is null && b is null)
             return true;
@@ -24,7 +24,7 @@ public abstract class GuidEntity : VersionEntity
 
     public override bool Equals(object? o)
     {
-        if (o is not GuidEntity e)
+        if (o is not IdEntity e)
             return false;
         if (e.Id                   == Guid.Empty && Id == Guid.Empty)
             return e.GetHashCode() == GetHashCode();
