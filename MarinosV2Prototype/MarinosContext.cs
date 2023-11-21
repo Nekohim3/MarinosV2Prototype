@@ -1,9 +1,13 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using MarinosV2Prototype.Models;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.OpenApi.Validations;
 
 namespace MarinosV2Prototype
 {
     public class MarinosContext : DbContext
     {
+        public DbSet<TestEntity> TestEntities { get; set; }
+
         public bool      IsValid   { get; set; }
         public Exception Exception { get; set; }
 
@@ -14,7 +18,11 @@ namespace MarinosV2Prototype
                 if (resetDatabase)
                     Database.EnsureDeleted();
 
-                Database.EnsureCreated();
+                if (Database.EnsureCreated())
+                {
+
+                }
+
                 IsValid = true;
             }
             catch (Exception e)
@@ -33,6 +41,11 @@ namespace MarinosV2Prototype
                                      $"Database={DatabaseConnection.DatabaseSettings.DatabaseName};"     +
                                      $"Username={DatabaseConnection.DatabaseSettings.DatabaseUsername};" +
                                      $"Password={DatabaseConnection.DatabaseSettings.DatabasePassword}");
+        }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            
         }
     }
 }

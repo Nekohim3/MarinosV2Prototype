@@ -4,9 +4,9 @@ using Newtonsoft.Json;
 namespace MarinosV2Prototype.Models;
 
 [JsonObject]
-public abstract class GuidEntity
+public abstract class GuidEntity : VersionEntity
 {
-    public Guid Guid { get; set; }
+    public Guid Id { get; set; }
 
     public static bool operator !=(GuidEntity? a, GuidEntity? b)
     {
@@ -26,8 +26,8 @@ public abstract class GuidEntity
     {
         if (o is not GuidEntity e)
             return false;
-        if (e.Guid                   == Guid.Empty && Guid == Guid.Empty)
+        if (e.Id                   == Guid.Empty && Id == Guid.Empty)
             return e.GetHashCode() == GetHashCode();
-        return e.Guid == Guid;
+        return e.Id == Id;
     }
 }

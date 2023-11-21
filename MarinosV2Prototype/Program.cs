@@ -1,5 +1,9 @@
+using MarinosV2Prototype;
 using Newtonsoft.Json;
 using Microsoft.EntityFrameworkCore;
+
+DatabaseConnection.DatabaseSettings = new DatabaseSettings();
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -15,7 +19,7 @@ builder.Services.AddControllers().AddNewtonsoftJson(_ =>
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
-//builder.Services.AddDbContext<TagContext>(_ =>
+builder.Services.AddDbContext<MarinosContext>();
 //                                          {
 //                                              _.UseNpgsql(builder.Configuration.GetConnectionString("TagDbConnection"));
 //                                          });

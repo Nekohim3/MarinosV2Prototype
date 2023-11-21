@@ -8,15 +8,18 @@ namespace MarinosV2Prototype.Controllers
     public abstract class TController<T> : ControllerBase where T : GuidEntity
     {
         protected readonly MarinosContext Context;
-
+        private readonly   IActionResult  _error;
         protected TController(MarinosContext ctx)
         {
             Context = ctx;
+            _error  = CheckConnection();
         }
 
         [HttpGet]
         public virtual async Task<IActionResult> Get()
         {
+            if (_error is not OkResult)
+                return _error;
             if (DatabaseConnection.DatabaseSettings == null || !Context.IsValid)
                 return Problem("Empty api config");
             var lst = await Context.Set<T>().AsNoTracking().ToListAsync();
@@ -27,9 +30,9 @@ namespace MarinosV2Prototype.Controllers
         [Route("{guid}")]
         public virtual async Task<IActionResult> Get(Guid guid)
         {
-            if (DatabaseConnection.DatabaseSettings == null || !Context.IsValid)
-                return Problem("Empty api config");
-            var t = await Context.Set<T>().AsNoTracking().SingleOrDefaultAsync(_ => _.Guid == guid);
+            if (_error is not OkResult)
+                return _error;
+            var t = await Context.Set<T>().AsNoTracking().SingleOrDefaultAsync(_ => _.Id == guid);
             if (t == null)
                 return NotFound();
             return Ok(t);
@@ -38,8 +41,8 @@ namespace MarinosV2Prototype.Controllers
         [HttpPost]
         public virtual async Task<IActionResult> Create(T t)
         {
-            if (DatabaseConnection.DatabaseSettings == null || !Context.IsValid)
-                return Problem("Empty api config");
+            if (_error is not OkResult)
+                return _error;
             Context.Add(t);
             await Context.SaveChangesAsync();
             return Ok(t);
@@ -49,8 +52,8 @@ namespace MarinosV2Prototype.Controllers
         [Route("Bulk")]
         public virtual async Task<IActionResult> Create(List<T> tList)
         {
-            if (DatabaseConnection.DatabaseSettings == null || !Context.IsValid)
-                return Problem("Empty api config");
+            if (_error is not OkResult)
+                return _error;
             Context.AddRange(tList);
             await Context.SaveChangesAsync();
             return Ok(tList);
@@ -59,8 +62,8 @@ namespace MarinosV2Prototype.Controllers
         [HttpPut]
         public virtual async Task<IActionResult> Update(T t)
         {
-            if (DatabaseConnection.DatabaseSettings == null || !Context.IsValid)
-                return Problem("Empty api config");
+            if (_error is not OkResult)
+                return _error;
             Context.Update(t);
             await Context.SaveChangesAsync();
             return Ok(t);
@@ -70,8 +73,8 @@ namespace MarinosV2Prototype.Controllers
         [Route("Bulk")]
         public virtual async Task<IActionResult> Update(List<T> tList)
         {
-            if (DatabaseConnection.DatabaseSettings == null || !Context.IsValid)
-                return Problem("Empty api config");
+            if (_error is not OkResult)
+                return _error;
             Context.UpdateRange(tList);
             await Context.SaveChangesAsync();
             return Ok(tList);
@@ -80,13 +83,20 @@ namespace MarinosV2Prototype.Controllers
         [HttpPatch]
         public virtual async Task<IActionResult> Save(T t)
         {
-            if (DatabaseConnection.DatabaseSettings == null || !Context.IsValid)
-                return Problem("Empty api config");
-            if (t.Guid == Guid.Empty)
+            if (_error is not OkResult)
+                return _error;
+            if (t.Id == Guid.Empty)
                 Context.Add(t);
             else
                 Context.Update(t);
-            await Context.SaveChangesAsync();
+            try
+            {
+                await Context.SaveChangesAsync();
+            }
+            catch (DbUpdateConcurrencyException e)
+            {
+                
+            }
             return Ok(t);
         }
 
@@ -94,10 +104,10 @@ namespace MarinosV2Prototype.Controllers
         [Route("Bulk")]
         public virtual async Task<IActionResult> Save(List<T> tList)
         {
-            if (DatabaseConnection.DatabaseSettings == null || !Context.IsValid)
-                return Problem("Empty api config");
-            var forAdd = tList.Where(_ => _.Guid == Guid.Empty).ToList();
-            var forSave = tList.Where(_ => _.Guid != Guid.Empty).ToList();
+            if (_error is not OkResult)
+                return _error;
+            var forAdd = tList.Where(_ => _.Id == Guid.Empty).ToList();
+            var forSave = tList.Where(_ => _.Id != Guid.Empty).ToList();
             Context.AddRange(forAdd);
             Context.UpdateRange(forSave);
             await Context.SaveChangesAsync();
@@ -108,8 +118,8 @@ namespace MarinosV2Prototype.Controllers
         [Route("{guid}")]
         public virtual async Task<IActionResult> Delete(Guid guid)
         {
-            if (DatabaseConnection.DatabaseSettings == null || !Context.IsValid)
-                return Problem("Empty api config");
+            if (_error is not OkResult)
+                return _error;
             var t = await Context.Set<T>().FindAsync(guid);
             if (t == null)
                 return NotFound();
@@ -122,14 +132,23 @@ namespace MarinosV2Prototype.Controllers
         [Route("Bulk")]
         public virtual async Task<IActionResult> Delete(List<Guid> guidList)
         {
-            if (DatabaseConnection.DatabaseSettings == null || !Context.IsValid)
-                return Problem("Empty api config");
-            var t = await Context.Set<T>().Where(_ => guidList.Contains(_.Guid)).ToListAsync();
+            if (_error is not OkResult)
+                return _error;
+            var t = await Context.Set<T>().Where(_ => guidList.Contains(_.Id)).ToListAsync();
             if (t.Count != guidList.Count)
                 return NotFound();
             Context.RemoveRange(t);
             await Context.SaveChangesAsync();
             return Ok(true);
+        }
+
+        private IActionResult CheckConnection()
+        {
+            if (DatabaseConnection.DatabaseSettings == null)
+                return Problem("Empty api config");
+            if (!Context.IsValid)
+                return Problem("Wrong api config");
+            return Ok();
         }
     }
 }
