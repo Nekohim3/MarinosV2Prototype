@@ -1,7 +1,6 @@
-﻿namespace MarinosV2Prototype
+﻿namespace MarinosV2Prototype;
+
+public static class DatabaseConnection
 {
-    public static class DatabaseConnection
-    {
-        public static DatabaseSettings? DatabaseSettings { get; set; }
-    }
+    public static DatabaseSettings? DatabaseSettings { get; set; }
 }

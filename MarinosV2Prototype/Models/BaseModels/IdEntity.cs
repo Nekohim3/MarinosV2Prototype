@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
 using Newtonsoft.Json;
 
-namespace MarinosV2Prototype.Models;
+namespace MarinosV2Prototype.Models.BaseModels;
 
 [JsonObject]
 public abstract class IdEntity : VersionEntity
@@ -26,7 +26,7 @@ public abstract class IdEntity : VersionEntity
     {
         if (o is not IdEntity e)
             return false;
-        if (e.Id                   == Guid.Empty && Id == Guid.Empty)
+        if (e.Id == Guid.Empty && Id == Guid.Empty)
             return e.GetHashCode() == GetHashCode();
         return e.Id == Id;
     }

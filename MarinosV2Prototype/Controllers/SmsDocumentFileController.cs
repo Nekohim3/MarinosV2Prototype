@@ -5,9 +5,9 @@ namespace MarinosV2Prototype.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    public class TestEntityController : TController<TestEntity>
+    public class SmsDocumentFileController : TController<SmsDocumentFile>
     {
-        public TestEntityController(MarinosContext ctx) : base(ctx)
+        public SmsDocumentFileController(MarinosContext ctx) : base(ctx)
         {
         }
     }
