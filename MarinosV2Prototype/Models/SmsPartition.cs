@@ -10,5 +10,5 @@ public class SmsPartition : TreeEntity<SmsPartition>
     public string Name   { get; set; } = string.Empty;
     public string Number { get; set; } = string.Empty;
         
-    public virtual ObservableCollectionWithSelectedItem<SmsDocument>? Documents { get; set; }
+    public virtual ICollection<SmsDocument>? Documents { get; set; }
 }

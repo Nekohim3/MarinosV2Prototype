@@ -11,6 +11,6 @@ public class SmsDocument : Entity
     public         Guid           IdPartition { get; set; }
     public virtual SmsPartition? Partition   { get; set; }
 
-    public virtual ObservableCollectionWithSelectedItem<SmsDocumentChange>? DocumentChanges { get; set; }
-    public virtual ObservableCollectionWithSelectedItem<SmsDocumentFile>?   DocumentFiles   { get; set; }
+    public virtual ICollection<SmsDocumentChange>? DocumentChanges { get; set; }
+    public virtual ICollection<SmsDocumentFile>?   DocumentFiles   { get; set; }
 }
