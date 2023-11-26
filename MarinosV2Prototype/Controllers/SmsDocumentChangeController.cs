@@ -1,4 +1,5 @@
 ﻿using MarinosV2Prototype.Models;
+using MarinosV2PrototypeShared.Models;
 using Microsoft.AspNetCore.Mvc;
 
 namespace MarinosV2Prototype.Controllers;

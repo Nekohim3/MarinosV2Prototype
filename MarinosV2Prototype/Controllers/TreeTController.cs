@@ -1,4 +1,5 @@
 ﻿using MarinosV2Prototype.Models.BaseModels;
+using MarinosV2PrototypeShared.BaseModels;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 

@@ -1,4 +1,5 @@
 ﻿using MarinosV2Prototype.Models;
+using MarinosV2PrototypeShared.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Validations;
 
@@ -25,7 +26,6 @@ public class MarinosContext : DbContext
             {
 
             }
-
             IsValid = true;
         }
         catch (Exception e)

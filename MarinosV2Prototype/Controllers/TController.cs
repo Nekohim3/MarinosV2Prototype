@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using MarinosV2Prototype.Models.BaseModels;
+using MarinosV2PrototypeShared.BaseModels;
 
 namespace MarinosV2Prototype.Controllers;
 
