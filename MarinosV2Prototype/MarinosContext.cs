@@ -1,7 +1,6 @@
-﻿using MarinosV2Prototype.Models;
+﻿using MarinosV2Prototype.Controllers;
 using MarinosV2PrototypeShared.Models;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.OpenApi.Validations;
 
 namespace MarinosV2Prototype;
 
@@ -27,6 +26,8 @@ public class MarinosContext : DbContext
 
             }
             IsValid = true;
+            var q = Set<SmsPartition>().Include("Document");
+            //q.Test();
         }
         catch (Exception e)
         {
