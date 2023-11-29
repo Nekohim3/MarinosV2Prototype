@@ -11,14 +11,10 @@ public abstract class TController<T> : ControllerBase where T : Entity
 {
     protected readonly MarinosContext       Context;
     protected readonly IActionResult        Error;
-    protected          Func<Task<List<T>?>> GetAllFunc;
-    protected          Func<Guid, Task<T?>> GetByIdFunc;
     protected TController(MarinosContext ctx)
     {
         Context     = ctx;
         Error       = CheckConnection();
-        GetAllFunc  = async () => await Context.Set<T>().ToListAsync();
-        GetByIdFunc = async id => await Context.Set<T>().SingleOrDefaultAsync(_ => _.Id == id);
     }
 
     [HttpGet]
@@ -29,7 +25,7 @@ public abstract class TController<T> : ControllerBase where T : Entity
 
         try
         {
-            return Ok(await GetAllFunc());
+            return Ok(await Context.Set<T>().ToListAsync());
         }
         catch (Exception e)
         {
@@ -45,7 +41,7 @@ public abstract class TController<T> : ControllerBase where T : Entity
 
         try
         {
-            var t = await GetByIdFunc(id);
+            var t = await Context.Set<T>().SingleOrDefaultAsync(_ => _.Id == id);
             if (t == null)
                 return NotFound();
             return Ok(t);
@@ -187,7 +183,6 @@ public abstract class TController<T> : ControllerBase where T : Entity
 
         try
         {
-
             if (t.Version == 0)
                 Context.Add(t);
             else

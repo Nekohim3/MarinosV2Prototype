@@ -13,9 +13,4 @@ public class SmsPartitionController : TreeTController<SmsPartition>
     {
 
     }
-
-    //public void Test()
-    //{
-    //    var q = Context.Set<SmsPartition>().Include(_ => _.Documents).ThenInclude(_ => _.DocumentChanges);
-    //}
 }

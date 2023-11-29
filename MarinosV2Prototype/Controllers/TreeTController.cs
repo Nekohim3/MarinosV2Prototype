@@ -10,49 +10,49 @@ namespace MarinosV2Prototype.Controllers
         {
         }
 
-        [HttpGet]
-        [Route("Tree")]
-        public virtual async Task<IActionResult> GetTree()
-        {
-            if (Error is not OkResult)
-                return Error;
+        //[HttpGet]
+        //[Route("Tree")]
+        //public virtual async Task<IActionResult> GetTree()
+        //{
+        //    if (Error is not OkResult)
+        //        return Error;
 
-            try
-            {
-                await Context.Set<T>().LoadAsync();
-                var lst = await Context.Set<T>().Where(_ => _.IdParent == null).ToListAsync();
-                return Ok(lst);
-            }
-            catch (Exception e)
-            {
-                return GetProblemFromException(e);
-            }
-        }
+        //    try
+        //    {
+        //        await Context.Set<T>().LoadAsync();
+        //        var lst = await Context.Set<T>().Where(_ => _.IdParent == null).ToListAsync();
+        //        return Ok(lst);
+        //    }
+        //    catch (Exception e)
+        //    {
+        //        return GetProblemFromException(e);
+        //    }
+        //}
 
-        [HttpGet]
-        [Route("Branch/{id}")]
-        public virtual async Task<IActionResult> GetBranch(Guid id)
-        {
-            if (Error is not OkResult)
-                return Error;
+        //[HttpGet]
+        //[Route("Branch/{id}")]
+        //public virtual async Task<IActionResult> GetBranch(Guid id)
+        //{
+        //    if (Error is not OkResult)
+        //        return Error;
 
-            try
-            {
-                await GetBranchRecur(id);
-                var item = await Context.Set<T>().Where(_ => _.Id == id).SingleOrDefaultAsync();
-                return Ok(item);
-            }
-            catch (Exception e)
-            {
-                return GetProblemFromException(e);
-            }
-        }
+        //    try
+        //    {
+        //        await GetBranchRecur(id);
+        //        var item = await Context.Set<T>().Where(_ => _.Id == id).SingleOrDefaultAsync();
+        //        return Ok(item);
+        //    }
+        //    catch (Exception e)
+        //    {
+        //        return GetProblemFromException(e);
+        //    }
+        //}
 
-        private async Task GetBranchRecur(Guid parentId)
-        {
-            var lst   = await Context.Set<T>().Where(_ => _.IdParent == parentId).ToListAsync();
-            foreach (var x in lst)
-                await GetBranchRecur(x.Id);
-        }
+        //private async Task GetBranchRecur(Guid parentId)
+        //{
+        //    var lst   = await Context.Set<T>().Where(_ => _.IdParent == parentId).ToListAsync();
+        //    foreach (var x in lst)
+        //        await GetBranchRecur(x.Id);
+        //}
     }
 }

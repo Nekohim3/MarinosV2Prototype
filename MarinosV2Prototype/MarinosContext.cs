@@ -26,8 +26,6 @@ public class MarinosContext : DbContext
 
             }
             IsValid = true;
-            var q = Set<SmsPartition>().Include("Document");
-            //q.Test();
         }
         catch (Exception e)
         {
