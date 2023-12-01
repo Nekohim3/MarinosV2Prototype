@@ -16,7 +16,7 @@ builder.Services.AddControllers().AddNewtonsoftJson(_ =>
                                                         _.SerializerSettings.NullValueHandling          = NullValueHandling.Ignore;
                                                         _.SerializerSettings.MaxDepth                   = 1024;
                                                         _.SerializerSettings.TypeNameHandling           = TypeNameHandling.None;
-                                                        _.SerializerSettings.ContractResolver           = new CustomContractResolver();
+                                                        _.SerializerSettings.ContractResolver           = new EntityContractResolver();
                                                     });
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();

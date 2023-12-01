@@ -13,4 +13,20 @@ public class SmsPartitionController : TreeTController<SmsPartition>
     {
 
     }
+
+    [HttpGet("ByParent/{id}")]
+    public virtual async Task<IActionResult> GetChildsByParentId(Guid id)
+    {
+        if (Error is not OkResult)
+            return Error;
+
+        try
+        {
+            return Ok(await Context.Set<SmsPartition>().Where(_ => _.IdParent== id).ToListAsync());
+        }
+        catch (Exception e)
+        {
+            return GetProblemFromException(e);
+        }
+    }
 }
