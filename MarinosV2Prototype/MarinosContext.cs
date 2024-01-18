@@ -16,6 +16,7 @@ public class MarinosContext : DbContext
 
     public MarinosContext(bool resetDatabase = false)
     {
+        //this.ChangeTracker.LazyLoadingEnabled = false;
         try
         {
             if (resetDatabase)

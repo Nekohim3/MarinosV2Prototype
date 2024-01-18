@@ -10,24 +10,26 @@ namespace MarinosV2Prototype.Controllers
         {
         }
 
-        //[HttpGet]
-        //[Route("Tree")]
-        //public virtual async Task<IActionResult> GetTree()
-        //{
-        //    if (Error is not OkResult)
-        //        return Error;
 
-        //    try
-        //    {
-        //        await Context.Set<T>().LoadAsync();
-        //        var lst = await Context.Set<T>().Where(_ => _.IdParent == null).ToListAsync();
-        //        return Ok(lst);
-        //    }
-        //    catch (Exception e)
-        //    {
-        //        return GetProblemFromException(e);
-        //    }
-        //}
+
+        [HttpGet]
+        [Route("Tree")]
+        public virtual async Task<IActionResult> GetRootList()
+        {
+            if (Error is not OkResult)
+                return Error;
+
+            try
+            {
+                var lst  = await Context.Set<T>().Where(_ => _.IdParent == null).ToListAsync();
+                Console.WriteLine($"GetRootList(); Count:{lst.Count}");
+                return Ok(lst);
+            }
+            catch (Exception e)
+            {
+                return GetProblemFromException(e);
+            }
+        }
 
         //[HttpGet]
         //[Route("Branch/{id}")]
